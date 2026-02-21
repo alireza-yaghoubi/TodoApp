@@ -1,25 +1,21 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { signIn } from "next-auth/react";
 
 function SigninPage() {
- const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const router = useRouter();
 
   const LoginHandler = async () => {
-    const res = await fetch("/api/auth/signup", {
-      method: "POST",
-      body: JSON.stringify({ email, password }),
-      headers: { "Content-Type": "application/json" },
+    const res = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
     });
-
-    const data = await res.json();
-    if (data.status === "success") {
-      router.push("/signin");
-    }
-    console.log(data);
+    if (!res.error) router.push("/");
   };
   return (
     <div className="signin-form">
@@ -43,7 +39,6 @@ function SigninPage() {
       </div>
     </div>
   );
-
 }
 
-export default SigninPage
+export default SigninPage;
