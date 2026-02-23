@@ -5,7 +5,7 @@ import User from "@/models/User";
 import { verifyPassword } from "@/utils/auth";
 import connectDB from "@/utils/connectDB";
 
-const authOptions = {
+export const authOptions = {
   session: { strategy: "jwt" },
   providers: [
     CredentialsProvider({
@@ -29,7 +29,7 @@ const authOptions = {
         const isValid = await verifyPassword(password, user.password);
 
         if (!isValid) throw new Error("Username or password is incorrect!");
-
+  
         return { email };
       },
     }),

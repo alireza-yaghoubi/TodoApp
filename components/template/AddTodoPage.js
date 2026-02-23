@@ -26,6 +26,7 @@ function AddTodoPage() {
     }
     console.log(data)
   };
+  
   return (
     <div className="add-form">
       <h2>
