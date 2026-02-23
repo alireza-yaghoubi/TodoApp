@@ -21,10 +21,11 @@ async function handler(req, res) {
       .status(401)
       .json({ status: "failed", message: "You are not logged in!" });
   }
+  console.log(session)
   const user = await User.findOne({ email: session.user.email });
   if (!user) {
     return res
-      .session(404)
+      .status(404)
       .json({ status: "failed", message: "User doesn't exsit!" });
   }
   //   Requests
@@ -37,7 +38,7 @@ async function handler(req, res) {
         .json({ status: "failed", message: "Invalid Data!" });
     }
     user.todo.push({ title, status });
-    user.save();
+    await user.save();
     res.status(201).json({ status: "success", message: "Todo created" });
   }
 }
