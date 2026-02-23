@@ -1,7 +1,17 @@
 html,
 body {
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    Segoe UI,
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    Fira Sans,
+    Droid Sans,
+    Helvetica Neue,
+    sans-serif;
 }
 
 a {
@@ -230,6 +240,7 @@ button {
 .home-page {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .home-page div {
@@ -237,6 +248,8 @@ button {
   margin: 20px;
   border-radius: 5px;
   flex-grow: 1;
+  height: fit-content;
+  /* width: 200px; */
 }
 
 .home-page p {
