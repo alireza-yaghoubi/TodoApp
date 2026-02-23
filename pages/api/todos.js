@@ -2,6 +2,8 @@ import User from "@/models/User";
 import connectDB from "@/utils/connectDB";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./auth/[...nextauth]";
+import { use } from "react";
+import { sortTodos } from "@/utils/sortTodos";
 async function handler(req, res) {
   // Connect to DB
   try {
@@ -15,15 +17,14 @@ async function handler(req, res) {
 
   //   authrazetion
 
-const session = await getServerSession(req, res, authOptions);
-  console.log(`=>>>>${session}`)
-  console.log(req.headers.cookie);
+  const session = await getServerSession(req, res, authOptions);
+
   if (!session) {
     return res
       .status(401)
       .json({ status: "failed", message: "You are not logged in!" });
   }
-  
+
   const user = await User.findOne({ email: session.user.email });
   if (!user) {
     return res
@@ -39,9 +40,12 @@ const session = await getServerSession(req, res, authOptions);
         .status(422)
         .json({ status: "failed", message: "Invalid Data!" });
     }
-    user.todo.push({ title, status });
+    user.todos.push({ title, status });
     await user.save();
     res.status(201).json({ status: "success", message: "Todo created" });
+  } else if (req.method === "GET") {
+    const sortedData = sortTodos(user.todos);
+    res.status(200).json({ status: "success", data: { todos: sortedData } });
   }
 }
 export default handler;
