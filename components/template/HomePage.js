@@ -29,7 +29,7 @@ function HomePage() {
       </div>
       <div className="home-page--done">
         <p>Done</p>
-        <Tasks data={todos.review} fetchTodos={fetchTodos} back="review" />
+        <Tasks data={todos.done} fetchTodos={fetchTodos} back="review" />
       </div>
     </div>
   );
