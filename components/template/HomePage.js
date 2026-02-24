@@ -13,24 +13,26 @@ function HomePage() {
     if (data.status === "success") setTodos(data.data.todos);
   };
 
-  return <div className="home-page">
-    <div className="home-page--todo">
+  return (
+    <div className="home-page">
+      <div className="home-page--todo">
         <p>Todo</p>
-        <Tasks data={todos.todo}/>
-    </div>
-     <div className="home-page--inProgress">
+        <Tasks data={todos.todo} fetchTodos={fetchTodos} next="inProgress" />
+      </div>
+      <div className="home-page--inProgress">
         <p>In Progress</p>
-        <Tasks data={todos.inProgress}/>
-    </div>
-     <div className="home-page--review">
+        <Tasks data={todos.inProgress} fetchTodos={fetchTodos} next="review" back="todo" />
+      </div>
+      <div className="home-page--review">
         <p>Review</p>
-        <Tasks data={todos.review}/>
-    </div>
-     <div className="home-page--done">
+        <Tasks data={todos.review} fetchTodos={fetchTodos} next="done" back="inProgress" />
+      </div>
+      <div className="home-page--done">
         <p>Done</p>
-        <Tasks data={todos.review}/>
+        <Tasks data={todos.review} fetchTodos={fetchTodos} back="review" />
+      </div>
     </div>
-  </div>;
+  );
 }
 
 export default HomePage;
