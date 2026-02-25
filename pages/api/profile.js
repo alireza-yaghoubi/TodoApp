@@ -33,8 +33,8 @@ async function handler(req, res) {
       .json({ status: "failed", message: "User doesn't exsit!" });
   }
 
-  if (req.method === "PATCH") {
-    const { id, name, lastName, password } = req.body;
+  if (req.method === "POST") {
+    const {name, lastName, password } = req.body;
     const isValid = await verifyPassword(password, user.password);
     if (!isValid) {
       return res.status(422).json({
@@ -42,7 +42,7 @@ async function handler(req, res) {
         message: "password is incorrect!",
       });
     }
-    if (!id || !name || !lastName || !password) {
+    if (!name || !lastName || !password) {
       return res
         .status(422)
         .json({ status: "failed", message: "Invalid data!" });
@@ -52,7 +52,7 @@ async function handler(req, res) {
     user.lastName = lastName;
     user.save();
 
-    console.log(result);
+
     res
       .status(200)
       .json({
