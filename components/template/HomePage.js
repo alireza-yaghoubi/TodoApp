@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Tasks from "../module/Tasks";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 function HomePage() {
   const [todos, setTodos] = useState([]);
@@ -7,6 +9,12 @@ function HomePage() {
   useEffect(() => {
     fetchTodos();
   }, []);
+  const { status } = useSession();
+  const router = useRouter();
+  useEffect(() => {
+    if (status === "unauthenticated") router.replace("/signin");
+  }, [status]);
+
   const fetchTodos = async () => {
     const res = await fetch("/api/todos");
     const data = await res.json();
@@ -21,11 +29,21 @@ function HomePage() {
       </div>
       <div className="home-page--inProgress">
         <p>In Progress</p>
-        <Tasks data={todos.inProgress} fetchTodos={fetchTodos} next="review" back="todo" />
+        <Tasks
+          data={todos.inProgress}
+          fetchTodos={fetchTodos}
+          next="review"
+          back="todo"
+        />
       </div>
       <div className="home-page--review">
         <p>Review</p>
-        <Tasks data={todos.review} fetchTodos={fetchTodos} next="done" back="inProgress" />
+        <Tasks
+          data={todos.review}
+          fetchTodos={fetchTodos}
+          next="done"
+          back="inProgress"
+        />
       </div>
       <div className="home-page--done">
         <p>Done</p>

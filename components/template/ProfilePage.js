@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { CgProfile } from "react-icons/cg";
 import ProfileForm from "../module/ProfileForm";
 import ProfileData from "./ProfileData";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 function ProfilePage() {
   const [name, setName] = useState("");
@@ -12,6 +14,12 @@ function ProfilePage() {
   useEffect(() => {
     fetchProfile();
   }, []);
+  const { status } = useSession();
+    const router = useRouter();
+  useEffect(() => {
+    if (status === "unauthenticated") router.replace("/signin");
+  }, [status]);
+
   const fetchProfile = async () => {
     const res = await fetch("/api/profile");
     const data = await res.json();
@@ -32,11 +40,11 @@ function ProfilePage() {
   return (
     <div className="profile-form">
       <h2>
-        <CgProfile  />
+        <CgProfile />
         Profile
       </h2>
       {data ? (
-        <ProfileData data={data}/>
+        <ProfileData data={data} />
       ) : (
         <ProfileForm
           name={name}

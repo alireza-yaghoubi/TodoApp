@@ -3,12 +3,21 @@ import React from "react";
 import { VscListSelection } from "react-icons/vsc";
 import { BiMessageSquareAdd } from "react-icons/bi";
 import { RxDashboard } from "react-icons/rx";
+import { signOut, useSession } from "next-auth/react";
+import { FiLogOut } from "react-icons/fi";
 
 function Layout({ children }) {
+  const { status } = useSession();
   return (
     <div className="container">
       <header>
         <p>Welmax Todo App</p>
+        {status === "authenticated" ? (
+          <button onClick={()=>signOut()}>
+            Log out
+            <FiLogOut />
+          </button>
+        ) : null}
       </header>
       <div className="container--main">
         <aside>
@@ -18,11 +27,11 @@ function Layout({ children }) {
               <VscListSelection />
               <Link href="/">Todos</Link>
             </li>
-                <li>
+            <li>
               <BiMessageSquareAdd />
               <Link href="/add-todo">Add Todo</Link>
             </li>
-                <li>
+            <li>
               <RxDashboard />
               <Link href="/profile">Profile</Link>
             </li>

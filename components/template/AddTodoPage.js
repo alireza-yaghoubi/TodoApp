@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GrAddCircle } from "react-icons/gr";
 import { BsAlignStart } from "react-icons/bs";
 import { FiSettings } from "react-icons/fi";
@@ -8,10 +8,18 @@ import { MdDoneAll } from "react-icons/md";
 import RadioButton from "../element/RadioButton";
 
 import { ToastContainer, toast } from "react-toastify";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 function AddTodoPage() {
   const [title, setTitle] = useState("");
   const [status, setStatus] = useState("todo");
+  const { status: dd } = useSession();
+    const router = useRouter();
+  useEffect(() => {
+    if (dd === "unauthenticated") router.replace("/signin");
+  }, [dd]);
+
   const addHandler = async () => {
     const res = await fetch("/api/todos", {
       method: "POST",
@@ -19,14 +27,14 @@ function AddTodoPage() {
       headers: { "Content-Type": "application/json" },
     });
     const data = await res.json();
-    if(data.status==="success"){
-      setTitle("")
-      setStatus("todo")
-      toast.success("Todo added!")
+    if (data.status === "success") {
+      setTitle("");
+      setStatus("todo");
+      toast.success("Todo added!");
     }
-    console.log(data)
+    console.log(data);
   };
-  
+
   return (
     <div className="add-form">
       <h2>
